@@ -28,6 +28,7 @@ Coming Soon!
     * MongoDB
     * Swagger
     * JWT
+    * Bcryptjs
 * UI/UX Design
     * [Figma](https://www.figma.com/)
     * [Unsplash](https://unsplash.com/)
