@@ -1,6 +1,7 @@
 # Unlucky
 
-## View Live Site (Coming Soon!)
+## View [Live Site](https://unlucky-social-media.netlify.app/)
+
 
 ## Description
 Unlucky is a social media-esque application where users can post about an unlucky event they had, read posts about other users' unlucky events, and make empathetic comments on posts.
@@ -11,6 +12,10 @@ As a learning project where the concept is simple, I don't anticipate a lot of u
 
 ## Design Docs
 Coming Soon!
+
+## Backend Documentation
+View [here](https://unluckyapi.herokuapp.com/)
+Hyperlink will be updated to the SwaggerUI documentation once I set it up
 
 ## Technologies
 * Front-End
