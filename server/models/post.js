@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import User from "./user.js";
 
 const Schema = mongoose.Schema;
 
@@ -15,8 +16,18 @@ const PostSchema = new Schema({
     type: [{ type: Schema.Types.ObjectId, ref: "User" }],
     default: [],
   },
-  timePosted: { type: Date, default: new Date() },
+  timePosted: { type: Date, default: new Date().toISOString() },
   edited: { type: Boolean, default: false },
+});
+
+/* Delete the post from the User's created posts array */
+PostSchema.post("findOneAndDelete", async (doc) => {
+  if (!doc) return;
+  try {
+    await User.updateOne({ _id: doc.postedBy }, { $pull: { posts: doc._id } });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 export default mongoose.model("Post", PostSchema);
