@@ -14,7 +14,6 @@ const UserSchema = new Schema({
 
 /* Remove all posts created by the user in the Post collection */
 UserSchema.post("findOneAndDelete", async (doc) => {
-  console.log(doc);
   if (!doc) return;
   try {
     for (let postId of doc.posts) {

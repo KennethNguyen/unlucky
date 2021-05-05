@@ -55,7 +55,7 @@ app.get("/", (req, res) => {
 
 app.use("/users", usersRouter);
 app.use("/posts", postsRouter);
-app.use("/comments", commentsRouter);
+app.use("/", commentsRouter);
 
 app.listen(process.env.PORT || 8000, () =>
   console.log("Listening on Port 8000")
