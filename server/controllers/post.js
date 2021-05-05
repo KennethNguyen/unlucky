@@ -24,7 +24,6 @@ const createPost = async (req, res) => {
 
     res.status(201).json(newPost);
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: "Internal Server Error." });
   }
 };
@@ -53,7 +52,6 @@ const updatePost = async (req, res) => {
 
     res.status(200).json(updatedPost);
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: "Internal Server Error." });
   }
 };

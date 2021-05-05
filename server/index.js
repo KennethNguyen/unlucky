@@ -42,9 +42,6 @@ mongoose.connect(process.env.MONGO_DB_CONNECTION_URI, {
   useCreateIndex: true,
   useFindAndModify: false,
 });
-mongoose.connection.on("connected", () => {
-  console.log("Connected to MongoDB");
-});
 mongoose.connection.on("error", (err) => {
   console.log("Error connection to MongoDB", err);
 });
@@ -57,6 +54,4 @@ app.use("/users", usersRouter);
 app.use("/posts", postsRouter);
 app.use("/", commentsRouter);
 
-app.listen(process.env.PORT || 8000, () =>
-  console.log("Listening on Port 8000")
-);
+app.listen(process.env.PORT || 8000);

@@ -42,7 +42,6 @@ const createComment = async (req, res) => {
 
     res.status(201).json(newComment);
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: "Internal Server Error." });
   }
 };
@@ -110,7 +109,6 @@ const likeComment = async (req, res) => {
     );
     res.status(200).json(updatedComment);
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: "Internal Server Error." });
   }
 };
