@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
+// import dotenv from "dotenv";
 import cors from "cors";
 import morgan from "morgan";
 import swaggerUI from "swagger-ui-express";
@@ -10,7 +10,7 @@ import postsRouter from "./routes/posts.js";
 import commentsRouter from "./routes/comments.js";
 
 const app = express();
-dotenv.config();
+// dotenv.config();
 
 const options = {
   definition: {
