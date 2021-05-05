@@ -56,6 +56,27 @@ const signup = async (req, res) => {
   }
 };
 
+/* Delete a user */
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    User.findByIdAndDelete(id, (error, document) => {
+      /* The PostSchema.post() middleware will execute here before rest of logic */
+      if (error) {
+        return res
+          .status(404)
+          .json({ error: "Error occurred while deleting user" });
+      }
+      if (!document) {
+        return res.status(404).json({ error: "No user with that id" });
+      }
+      return res.status(204).json({ message: "Successfully deleted user" });
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error." });
+  }
+};
+
 /* Delete all users from User collection; just for testing purposes */
 const purgeUsers = async (req, res) => {
   try {
@@ -80,4 +101,4 @@ const returnTokenAndUser = async (user) => {
   return { token, user: tokenContent };
 };
 
-export { login, signup, purgeUsers };
+export { login, signup, deleteUser, purgeUsers };
