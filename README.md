@@ -15,6 +15,7 @@ Coming Soon!
 
 ## Backend Documentation
 View [here](https://unluckyapi.herokuapp.com/)
+
 Hyperlink will be updated to the SwaggerUI documentation once I set it up
 
 ## Technologies
@@ -24,6 +25,7 @@ Hyperlink will be updated to the SwaggerUI documentation once I set it up
     * Redux/Redux-Toolkit
     * @Chakra-UI - React UI framework
         * View the official website [here](https://chakra-ui.com/)
+    * React Router DOM
     * Axios
     * Moment.js
 * Back-End
@@ -39,6 +41,7 @@ Hyperlink will be updated to the SwaggerUI documentation once I set it up
     * [Unsplash](https://unsplash.com/)
     * [Cooloers.co](Cooloers.co/image-picker)
     * Color palette is #14 from [Digital Synopsis](https://digitalsynopsis.com/design/color-combinations-palettes-schemes/)
+    * Black Cat icon made by [Freepik](https://www.freepik.com) from [FlatIcon](https://www.flaticon.com)
 * Hosting
     * Netlify
     * Heroku
