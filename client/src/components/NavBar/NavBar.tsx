@@ -34,7 +34,13 @@ const NavBar = () => {
       </Box>
       <Spacer />
       <Link to="/login">
-        <Button size="md" borderRadius="8px" fontSize="lg">
+        <Button
+          size="md"
+          borderRadius="8px"
+          fontSize="lg"
+          bg="teal.500"
+          _hover={{ bg: "teal.400" }}
+        >
           Login
         </Button>
       </Link>
