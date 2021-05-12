@@ -42,6 +42,7 @@ const SplashContainer = () => {
           </Link>
           <Button
             bg="yellow.700"
+            _hover={{ bg: "yellow.600" }}
             borderRadius="8px"
             size="md"
             rightIcon={<ChevronRightIcon />}

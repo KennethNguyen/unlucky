@@ -1,8 +1,21 @@
 import React from "react";
+import { useAppSelector, useAppDispatch } from "../../app/hooks";
+import { userData, logoutUser } from "../../features/user/userSlice";
 import { Button, Flex, Box, Image, Spacer } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const NavBar = () => {
+  const user = useAppSelector(userData);
+  const dispatch = useAppDispatch();
+  const history = useHistory();
+
+  /* log user out and return to login screen */
+  const handleLogOut = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    e.preventDefault();
+    dispatch(logoutUser());
+    history.push("/login");
+  };
+
   return (
     <Flex
       align="center"
@@ -33,17 +46,30 @@ const NavBar = () => {
         </Link>
       </Box>
       <Spacer />
-      <Link to="/login">
+      {user ? (
         <Button
           size="md"
           borderRadius="8px"
           fontSize="lg"
-          bg="teal.500"
-          _hover={{ bg: "teal.400" }}
+          bg="yellow.700"
+          _hover={{ bg: "yellow.600" }}
+          onClick={handleLogOut}
         >
-          Login
+          Log Out
         </Button>
-      </Link>
+      ) : (
+        <Link to="/login">
+          <Button
+            size="md"
+            borderRadius="8px"
+            fontSize="lg"
+            bg="teal.500"
+            _hover={{ bg: "teal.400" }}
+          >
+            Login
+          </Button>
+        </Link>
+      )}
     </Flex>
   );
 };
