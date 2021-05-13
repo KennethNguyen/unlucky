@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import { login, signUp } from "../../api/api";
-import { IAuthForm } from "../../types/FormTypes";
+import { IAuthForm, IDemoUser } from "../../types/FormTypes";
+import jwt from "jsonwebtoken";
 
 type FormError = {
   message: string;
@@ -27,9 +28,9 @@ const initialState: UserState = {
 
 export const loginUser = createAsyncThunk<
   IUser,
-  IAuthForm,
+  IAuthForm | IDemoUser,
   { rejectValue: FormError }
->("users/loginUser", async (formData: IAuthForm, thunkAPI) => {
+>("users/loginUser", async (formData: IAuthForm | IDemoUser, thunkAPI) => {
   try {
     const response = await login(formData);
     const fetchedUserData = response.data;
@@ -79,6 +80,31 @@ export const userSlice = createSlice({
       state.status = "idle";
       state.errorMessage = "";
     },
+    persistUser: (state) => {
+      const localUser: string | null = localStorage.getItem("profile");
+      if (localUser) {
+        const parsedUser = JSON.parse(localUser);
+
+        let JWT_SECRET: string;
+        if (process.env.REACT_APP_JWT_SECRET) {
+          JWT_SECRET = process.env.REACT_APP_JWT_SECRET;
+        } else {
+          throw new Error("JWT_SECRET environment variable is not set up");
+        }
+
+        /* verify the user's token from local storage; if still valid then perist the local storage data to client state */
+        try {
+          const validToken = jwt.verify(parsedUser.token, JWT_SECRET);
+          state.userData = validToken ? parsedUser : null;
+        } catch (error) {
+          localStorage.clear();
+          state.userData = null;
+          state.status = "idle";
+          state.errorMessage = "";
+          throw new Error("Your session has expired. Please log in again.");
+        }
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(loginUser.fulfilled, (state, { payload }) => {
@@ -108,7 +134,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const { logoutUser, resetState } = userSlice.actions;
+export const { logoutUser, resetState, persistUser } = userSlice.actions;
 
 export const formStatus = (state: RootState) => state.user.status;
 export const formError = (state: RootState) => state.user.errorMessage;

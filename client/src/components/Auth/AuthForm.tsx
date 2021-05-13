@@ -6,6 +6,7 @@ import {
   formStatus,
   resetState,
   formError,
+  userData,
 } from "../../features/user/userSlice";
 import { Link as RouterLink, useLocation, useHistory } from "react-router-dom";
 import { IAuthForm } from "../../types/FormTypes";
@@ -37,6 +38,7 @@ const initialFormState: IAuthForm = {
 const AuthForm = () => {
   const status = useAppSelector(formStatus);
   const errorMessage = useAppSelector(formError);
+  const user = useAppSelector(userData);
   const dispatch = useAppDispatch();
   const [formData, setFormData] = useState<IAuthForm>(initialFormState);
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -44,6 +46,14 @@ const AuthForm = () => {
   const location = useLocation();
   const formType: string = location.pathname;
   const toast = useToast();
+
+  /* redirect user if they are already logged in */
+  useEffect(() => {
+    if (user) {
+      history.push("/");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   /* action done after submitting form */
   useEffect(() => {
@@ -63,12 +73,14 @@ const AuthForm = () => {
       dispatch(resetState());
       history.push("/");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
   /* reset the form state if user switches between sign up and log in since shared component */
   useEffect(() => {
     dispatch(resetState());
     setFormData({ ...initialFormState });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formType]);
 
   /* submit the form and dispatch action based on login or sign up route */

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IAuthForm } from "../types/FormTypes";
+import { IAuthForm, IDemoUser } from "../types/FormTypes";
 
 // const API = axios.create({
 //   baseURL: "https://unluckyapi.herokuapp.com",
@@ -22,7 +22,7 @@ import { IAuthForm } from "../types/FormTypes";
 
 const url = axios.create({ baseURL: "http://localhost:8000" });
 
-export const login = (formData: IAuthForm) =>
+export const login = (formData: IAuthForm | IDemoUser) =>
   url.post("/users/login", formData);
 export const signUp = (formData: IAuthForm) =>
   url.post("/users/signup", formData);

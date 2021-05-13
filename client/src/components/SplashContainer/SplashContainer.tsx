@@ -1,9 +1,18 @@
 import React from "react";
+import { useAppDispatch } from "../../app/hooks";
+import { loginUser } from "../../features/user/userSlice";
 import { Button, Flex, Box, Image, Stack, Heading } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
+import { IDemoUser } from "../../types/FormTypes";
+
+const demoUser: IDemoUser = {
+  username: process.env.REACT_APP_DEMO_USER,
+  password: process.env.REACT_APP_DEMO_PASS,
+};
 
 const SplashContainer = () => {
+  const dispatch = useAppDispatch();
   return (
     <Flex
       align="center"
@@ -46,6 +55,7 @@ const SplashContainer = () => {
             borderRadius="8px"
             size="md"
             rightIcon={<ChevronRightIcon />}
+            onClick={() => dispatch(loginUser(demoUser))}
           >
             Try the demo now!
           </Button>
