@@ -1,44 +1,37 @@
 import axios from "axios";
-import { IAuthForm, IDemoUser } from "../types/FormTypes";
+import { IAuthForm, IDemoUser, IPostForm } from "../types/FormTypes";
 
-// const API = axios.create({
-//   baseURL: "https://unluckyapi.herokuapp.com",
-// });
+const API = axios.create({
+  baseURL: "http://localhost:8000", //https://unluckyapi.herokuapp.com
+});
 
-// send token back to backend to verify that we are logged in
-// API.interceptors.request.use(
-//   (req) => {
-//     if (localStorage.getItem("profile")) {
-//       req.headers.Authorization = `Bearer ${
-//         JSON.parse(localStorage.getItem("profile")).token
-//       }`;
-//     }
-//     return req;
-//   },
-//   (error) => {
-//     console.log(error);
-//   }
-// );
-
-const url = axios.create({ baseURL: "http://localhost:8000" });
+// send token back to backend to verify that user is logged in for authorized access
+API.interceptors.request.use(
+  (req) => {
+    const localUser: string | null = localStorage.getItem("profile");
+    if (localUser) {
+      const parsedUser = JSON.parse(localUser);
+      req.headers.Authorization = `Bearer ${parsedUser.token}`;
+    }
+    return req;
+  },
+  (error) => {
+    console.log(error);
+  }
+);
 
 export const login = (formData: IAuthForm | IDemoUser) =>
-  url.post("/users/login", formData);
+  API.post("/users/login", formData);
 export const signUp = (formData: IAuthForm) =>
-  url.post("/users/signup", formData);
+  API.post("/users/signup", formData);
 
-// export const fetchPosts = () => axios.get(url);
-// export const createPost = (newPost) => axios.post(url, newPost)
-// export const updatePost = (id, updatedPost) => axios.patch(`${url}/${id}`, updatedPost)
-// export const deletePost = (id) => axios.delete(`${url}/${id}`)
-// export const likePost = (id) => axios.patch(`${url}/${id}/likePost`)
+export const fetchPosts = () => API.get("/posts");
+export const createPost = (newPostData: IPostForm) =>
+  API.post("/posts", newPostData);
+export const updatePost = (
+  postId: string | undefined,
+  updatedPostData: IPostForm
+) => API.patch(`/posts/${postId}`, updatedPostData);
 
-// export const fetchPosts = () => API.get("/posts");
-// export const createPost = (newPost) => API.post("/posts", newPost);
-// export const updatePost = (id, updatedPost) =>
-//   API.patch(`/posts/${id}`, updatedPost);
 // export const deletePost = (id) => API.delete(`/posts/${id}`);
 // export const likePost = (id) => API.patch(`/posts/${id}/likePost`);
-
-// export const signIn = (formData) => API.post("/user/signin", formData);
-// export const signUp = (formData) => API.post("/user/signup", formData);

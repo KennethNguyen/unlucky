@@ -72,6 +72,12 @@ const AuthForm = () => {
       setFormData({ ...initialFormState });
       dispatch(resetState());
       history.push("/");
+      toast({
+        title: `Welcome back, ${user?.username}`,
+        status: "success",
+        position: "top",
+        isClosable: true,
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);

@@ -53,6 +53,7 @@ const Post = () => {
       </VStack>
 
       {/* Post action buttons */}
+      {/* style={{ color: "black" }} <- For icon to indicate current user liked */}
       <HStack p={2}>
         <Button
           leftIcon={<FaThumbsUp />}
