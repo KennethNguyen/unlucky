@@ -32,6 +32,7 @@ export const updatePost = (
   postId: string | undefined,
   updatedPostData: IPostForm
 ) => API.patch(`/posts/${postId}`, updatedPostData);
-
-// export const deletePost = (id) => API.delete(`/posts/${id}`);
-// export const likePost = (id) => API.patch(`/posts/${id}/likePost`);
+export const deletePost = (postId: string | undefined) =>
+  API.delete(`/posts/${postId}`);
+export const likePost = (postId: string | undefined) =>
+  API.patch(`/posts/${postId}/like`);

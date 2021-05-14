@@ -19,11 +19,21 @@ const getPosts = async (req, res) => {
 const createPost = async (req, res) => {
   try {
     const postData = req.body;
-    const newPost = await Post.create({ ...postData, postedBy: req.userId });
+    let newPost = await Post.create({
+      ...postData,
+      postedBy: req.userId,
+    });
 
     const user = await User.findById(req.userId);
     user.posts = user.posts.concat(newPost._id);
     await user.save();
+
+    newPost = await newPost
+      .populate("postedBy", {
+        _id: 1,
+        username: 1,
+      })
+      .execPopulate(); // needed to populate the created post
 
     res.status(201).json(newPost);
   } catch (error) {
@@ -51,6 +61,9 @@ const updatePost = async (req, res) => {
 
     const updatedPost = await Post.findByIdAndUpdate(id, updatedFields, {
       new: true,
+    }).populate("postedBy", {
+      _id: 1,
+      username: 1,
     });
 
     res.status(200).json(updatedPost);
@@ -83,7 +96,12 @@ const likePost = async (req, res) => {
       post.likes = post.likes.filter((refId) => String(refId) !== req.userId);
     }
 
-    const updatedPost = await Post.findByIdAndUpdate(id, post, { new: true });
+    const updatedPost = await Post.findByIdAndUpdate(id, post, {
+      new: true,
+    }).populate("postedBy", {
+      _id: 1,
+      username: 1,
+    });
     res.status(200).json(updatedPost);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error." });

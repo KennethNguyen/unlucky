@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { createNewPost, postFormStatus } from "../../features/post/postSlice";
+import {
+  createPost,
+  postFormStatus,
+  updatePost,
+} from "../../features/post/postSlice";
 import { IPostForm } from "../../types/FormTypes";
 import {
   Box,
@@ -48,14 +52,12 @@ const PostForm = ({
     e.preventDefault();
 
     if (editPostId) {
-      // dispatch(loginUser(formData));
-      console.log("Dispatch edit post");
+      dispatch(updatePost({ postId: editPostId, formData }));
       setEditPostId(undefined);
       setFormData(initialFormState);
     } else {
-      dispatch(createNewPost(formData));
+      dispatch(createPost(formData));
       setFormData(initialFormState);
-      console.log("Dispatch create new post");
     }
   };
 
@@ -80,7 +82,7 @@ const PostForm = ({
       rounded="md"
     >
       <Heading mb={2} textAlign="center">
-        Create New Post
+        {editingPost ? "Edit Post" : "Create New Post"}
       </Heading>
       <form onSubmit={handleSubmit}>
         <VStack spacing={4}>
@@ -131,7 +133,8 @@ const PostForm = ({
               </React.Fragment>
             )}
 
-            {formStatus !== "loading" && (editingPost ? "Update" : "Post")}
+            {formStatus !== "loading" &&
+              (editingPost ? "Confirm Edit" : "Post")}
           </Button>
           <Button
             width="100%"

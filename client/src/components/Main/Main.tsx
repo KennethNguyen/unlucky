@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAppDispatch } from "../../app/hooks";
-import { getPosts } from "../../features/post/postSlice";
+import { fetchPosts } from "../../features/post/postSlice";
 import PostForm from "../PostForm/PostForm";
 import { Flex } from "@chakra-ui/react";
 import PostsContainer from "../PostsContainer/PostsContainer";
@@ -12,8 +12,8 @@ const Main = () => {
 
   /* fetch posts from database */
   useEffect(() => {
-    dispatch(getPosts());
-  }, [dispatch, editPostId]);
+    dispatch(fetchPosts());
+  }, [dispatch]);
 
   return (
     <Flex
@@ -25,7 +25,7 @@ const Main = () => {
       mt={{ base: 8, md: 6 }}
       mr={{ base: 0, md: 4 }}
     >
-      <PostsContainer />
+      <PostsContainer setEditPostId={setEditPostId} />
       <PostForm editPostId={editPostId} setEditPostId={setEditPostId} />
     </Flex>
   );
