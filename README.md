@@ -2,7 +2,13 @@
 
 ## View [Live Site](https://unlucky-social-media.netlify.app/)
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/b8081a21-5049-4437-84b8-173b5466ca0f/deploy-status)](https://app.netlify.com/sites/unlucky-social-media/deploys)
+## Splash Page Screenshot
+
+<img src=./images/exampleUnluckySplash.png alt="Splash Page Image" width="830px" height="500px">
+
+## Main Page Screenshot
+
+<img src="./images/exampleUnluckyMain.png" alt="Main Page Image" width="830px" height="500px">
 
 ## Description
 

@@ -1,7 +1,15 @@
 import React from "react";
-import { useAppDispatch } from "../../app/hooks";
-import { loginUser } from "../../features/user/userSlice";
-import { Button, Flex, Box, Image, Stack, Heading } from "@chakra-ui/react";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { loginUser, formStatus } from "../../features/user/userSlice";
+import {
+  Button,
+  Flex,
+  Box,
+  Image,
+  Stack,
+  Heading,
+  Spinner,
+} from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 import { IDemoUser } from "../../types/FormTypes";
@@ -13,6 +21,8 @@ const demoUser: IDemoUser = {
 
 const SplashContainer = () => {
   const dispatch = useAppDispatch();
+  const status = useAppSelector(formStatus);
+
   return (
     <Flex
       align="center"
@@ -57,7 +67,14 @@ const SplashContainer = () => {
             rightIcon={<ChevronRightIcon />}
             onClick={() => dispatch(loginUser(demoUser))}
           >
-            Try the demo now!
+            {status === "loading" ? (
+              <React.Fragment>
+                <Spinner mr={4} />
+                Logging in...
+              </React.Fragment>
+            ) : (
+              "Try the demo now!"
+            )}
           </Button>
         </Stack>
       </Box>
