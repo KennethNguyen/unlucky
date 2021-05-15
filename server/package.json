@@ -7,9 +7,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "node -r dotenv/config index.js",
-    "nodemon": "nodemon index.js",
+    "nodemon": "nodemon -r dotenv/config index.js",
     "client": "npm start --prefix ../client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run nodemon\" \"npm run client\""
   },
   "keywords": [],
   "author": "",

@@ -17,4 +17,7 @@ export interface IPostForm {
   hashTag: string;
 }
 
-/*  */
+/* Interface for a new comment */
+export interface ICommentForm {
+  text: string;
+}

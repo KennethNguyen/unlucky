@@ -5,10 +5,14 @@ import User from "../models/user.js";
 /* Get all posts */
 const getPosts = async (req, res) => {
   try {
-    const posts = await Post.find({}).populate("postedBy", {
-      _id: 1,
-      username: 1,
-    });
+    /* Nesting mongoose populate and selecting attributes from the document */
+    const posts = await Post.find({})
+      .populate({ path: "postedBy", select: "_id username" })
+      .populate({
+        path: "comments",
+        populate: [{ path: "userId", select: "_id username" }],
+      });
+
     res.status(200).json(posts);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch all customers" });
@@ -57,14 +61,18 @@ const updatePost = async (req, res) => {
       return res.status(404).json({ error: "No post with that id" });
     }
 
-    const updatedFields = { ...post, edited: true };
+    postExist.title = post.title;
+    postExist.text = post.text;
+    postExist.hashTag = post.hashTag;
 
-    const updatedPost = await Post.findByIdAndUpdate(id, updatedFields, {
+    const updatedPost = await Post.findByIdAndUpdate(id, postExist, {
       new: true,
-    }).populate("postedBy", {
-      _id: 1,
-      username: 1,
-    });
+    })
+      .populate({ path: "postedBy", select: "_id username" })
+      .populate({
+        path: "comments",
+        populate: [{ path: "userId", select: "_id username" }],
+      });
 
     res.status(200).json(updatedPost);
   } catch (error) {
@@ -98,10 +106,13 @@ const likePost = async (req, res) => {
 
     const updatedPost = await Post.findByIdAndUpdate(id, post, {
       new: true,
-    }).populate("postedBy", {
-      _id: 1,
-      username: 1,
-    });
+    })
+      .populate({ path: "postedBy", select: "_id username" })
+      .populate({
+        path: "comments",
+        populate: [{ path: "userId", select: "_id username" }],
+      });
+
     res.status(200).json(updatedPost);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error." });

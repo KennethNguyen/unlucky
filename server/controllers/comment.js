@@ -30,11 +30,18 @@ const createComment = async (req, res) => {
   try {
     const { id: paramPostId } = req.params;
     const { text } = req.body;
-    const newComment = await Comment.create({
+    let newComment = await Comment.create({
       text,
       userId: req.userId,
       postId: paramPostId,
     });
+
+    newComment = await newComment
+      .populate("userId", {
+        _id: 1,
+        username: 1,
+      })
+      .execPopulate(); // needed to populate the new comment
 
     const post = await Post.findById(paramPostId);
     post.comments = post.comments.concat(newComment._id);
@@ -106,7 +113,7 @@ const likeComment = async (req, res) => {
       {
         new: true,
       }
-    );
+    ).populate({ path: "userId", select: "_id username" });
     res.status(200).json(updatedComment);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error." });

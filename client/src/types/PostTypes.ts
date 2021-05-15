@@ -19,6 +19,7 @@ export interface IPost {
 
 /* Interface for a Comment object */
 export interface IComment {
+  id: string;
   text: string;
   userId: IPostedUser;
   postId: string;

@@ -1,8 +1,13 @@
 import axios from "axios";
-import { IAuthForm, IDemoUser, IPostForm } from "../types/FormTypes";
+import {
+  IAuthForm,
+  IDemoUser,
+  IPostForm,
+  ICommentForm,
+} from "../types/FormTypes";
 
 const API = axios.create({
-  baseURL: "http://localhost:8000", //https://unluckyapi.herokuapp.com
+  baseURL: "https://unluckyapi.herokuapp.com",
 });
 
 // send token back to backend to verify that user is logged in for authorized access
@@ -24,15 +29,16 @@ export const login = (formData: IAuthForm | IDemoUser) =>
   API.post("/users/login", formData);
 export const signUp = (formData: IAuthForm) =>
   API.post("/users/signup", formData);
-
 export const fetchPosts = () => API.get("/posts");
 export const createPost = (newPostData: IPostForm) =>
   API.post("/posts", newPostData);
-export const updatePost = (
-  postId: string | undefined,
-  updatedPostData: IPostForm
-) => API.patch(`/posts/${postId}`, updatedPostData);
-export const deletePost = (postId: string | undefined) =>
-  API.delete(`/posts/${postId}`);
-export const likePost = (postId: string | undefined) =>
-  API.patch(`/posts/${postId}/like`);
+export const updatePost = (postId: string, updatedPostData: IPostForm) =>
+  API.patch(`/posts/${postId}`, updatedPostData);
+export const deletePost = (postId: string) => API.delete(`/posts/${postId}`);
+export const likePost = (postId: string) => API.patch(`/posts/${postId}/like`);
+export const createComment = (postId: string, text: ICommentForm) =>
+  API.post(`/posts/${postId}/comments`, text);
+export const likeComment = (commentId: string) =>
+  API.patch(`/comments/${commentId}/like`);
+export const deleteComment = (commentId: string) =>
+  API.delete(`/comments/${commentId}`);

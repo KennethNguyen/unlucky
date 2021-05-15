@@ -2,12 +2,15 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import {
   fetchPosts as API_fetchPosts,
-  createPost as API_createPosts,
-  updatePost as API_updatePosts,
-  deletePost as API_deletePosts,
-  likePost as API_likePosts,
+  createPost as API_createPost,
+  updatePost as API_updatePost,
+  deletePost as API_deletePost,
+  likePost as API_likePost,
+  createComment as API_createComment,
+  likeComment as API_likeComment,
+  deleteComment as API_deleteComment,
 } from "../../api/api";
-import { IPostForm } from "../../types/FormTypes";
+import { IPostForm, ICommentForm } from "../../types/FormTypes";
 import { IPost, IComment } from "../../types/PostTypes";
 
 export interface PostState {
@@ -42,7 +45,7 @@ export const createPost = createAsyncThunk<IPost, IPostForm>(
   "posts/createPost",
   async (formData: IPostForm) => {
     try {
-      const response = await API_createPosts(formData);
+      const response = await API_createPost(formData);
       const createdPost = response.data;
       return createdPost as IPost;
     } catch (error) {
@@ -53,10 +56,10 @@ export const createPost = createAsyncThunk<IPost, IPostForm>(
 
 export const updatePost = createAsyncThunk<
   IPost,
-  { postId: string | undefined; formData: IPostForm }
+  { postId: string; formData: IPostForm }
 >("posts/updatePost", async ({ postId, formData }) => {
   try {
-    const response = await API_updatePosts(postId, formData);
+    const response = await API_updatePost(postId, formData);
     const editedPost = response.data;
     return editedPost as IPost;
   } catch (error) {
@@ -68,7 +71,7 @@ export const deletePost = createAsyncThunk<string, string>(
   "posts/deletePost",
   async (postId) => {
     try {
-      await API_deletePosts(postId);
+      await API_deletePost(postId);
       return postId;
     } catch (error) {
       throw new Error(error.response.data.error);
@@ -76,11 +79,11 @@ export const deletePost = createAsyncThunk<string, string>(
   }
 );
 
-export const likePost = createAsyncThunk<IPost, string | undefined>(
+export const likePost = createAsyncThunk<IPost, string>(
   "posts/likePost",
   async (postId) => {
     try {
-      const response = await API_likePosts(postId);
+      const response = await API_likePost(postId);
       const likedPost = response.data;
       return likedPost as IPost;
     } catch (error) {
@@ -88,6 +91,44 @@ export const likePost = createAsyncThunk<IPost, string | undefined>(
     }
   }
 );
+
+export const createComment = createAsyncThunk<
+  IComment,
+  { postId: string; text: ICommentForm }
+>("comments/createComment", async ({ postId, text }) => {
+  try {
+    const response = await API_createComment(postId, text);
+    const createdComment = response.data;
+    return createdComment as IComment;
+  } catch (error) {
+    throw new Error(error.response.data.error);
+  }
+});
+
+export const likeComment = createAsyncThunk<IComment, string>(
+  "comments/likeComment",
+  async (commentId) => {
+    try {
+      const response = await API_likeComment(commentId);
+      const likedComment = response.data;
+      return likedComment as IComment;
+    } catch (error) {
+      throw new Error(error.response.data.error);
+    }
+  }
+);
+
+export const deleteComment = createAsyncThunk<
+  { postId: string; commentId: string },
+  { postId: string; commentId: string }
+>("comments/deleteComment", async ({ postId, commentId }) => {
+  try {
+    await API_deleteComment(commentId);
+    return { postId, commentId };
+  } catch (error) {
+    throw new Error(error.response.data.error);
+  }
+});
 
 export const postSlice = createSlice({
   name: "post",
@@ -123,7 +164,32 @@ export const postSlice = createSlice({
     builder.addCase(likePost.fulfilled, (state, { payload }) => {
       let postIndex = state.posts?.findIndex((post) => post.id === payload.id);
       state.posts[postIndex] = payload;
-      state.formStatus = "idle";
+    });
+    builder.addCase(createComment.fulfilled, (state, { payload }) => {
+      let postIndex = state.posts?.findIndex(
+        (post) => post.id === payload.postId
+      );
+      state.posts[postIndex].comments.push(payload);
+    });
+    builder.addCase(likeComment.fulfilled, (state, { payload }) => {
+      let postIndex = state.posts?.findIndex(
+        (post) => post.id === payload.postId
+      );
+      let foundPost: IPost = state.posts[postIndex];
+      let commentIndex = foundPost?.comments.findIndex(
+        (comment) => comment.id === payload.id
+      );
+      foundPost.comments[commentIndex] = payload;
+    });
+    builder.addCase(deleteComment.fulfilled, (state, { payload }) => {
+      let postIndex = state.posts?.findIndex(
+        (post) => post.id === payload.postId
+      );
+      let foundPost: IPost = state.posts[postIndex];
+      let commentIndex = foundPost?.comments.findIndex(
+        (comment) => comment.id === payload.commentId
+      );
+      foundPost.comments.splice(commentIndex, 1);
     });
   },
 });
