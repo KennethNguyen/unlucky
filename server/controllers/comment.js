@@ -120,20 +120,9 @@ const likeComment = async (req, res) => {
   }
 };
 
-/* Delete all comments from Comment collection; just for testing purposes */
-const purgeComments = async (req, res) => {
-  try {
-    await Comment.deleteMany({});
-    res.json({ message: "Purged all comments" });
-  } catch (error) {
-    res.status(500).json({ error: "Internal Server Error." });
-  }
-};
-
 export {
   getComments,
   createComment,
   deleteComment,
   likeComment,
-  purgeComments,
 };

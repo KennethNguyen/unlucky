@@ -144,14 +144,4 @@ const deletePost = async (req, res) => {
   }
 };
 
-/* Delete all posts from Post collection; just for testing purposes */
-const purgePosts = async (req, res) => {
-  try {
-    await Post.deleteMany({});
-    res.json({ message: "Purged all posts" });
-  } catch (error) {
-    res.status(500).json({ error: "Internal Server Error." });
-  }
-};
-
-export { getPosts, createPost, updatePost, likePost, deletePost, purgePosts };
+export { getPosts, createPost, updatePost, likePost, deletePost };

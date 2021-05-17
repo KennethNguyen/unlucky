@@ -5,7 +5,6 @@ import {
   updatePost,
   likePost,
   deletePost,
-  purgePosts,
 } from "../controllers/post.js";
 import auth from "../middleware/auth.js";
 
@@ -26,7 +25,5 @@ router.patch("/:id/like", auth, likePost);
 /* Delete a post */
 router.delete("/:id", auth, deletePost);
 
-/* Purge Post database */
-router.delete("/", purgePosts);
 
 export default router;

@@ -4,7 +4,6 @@ import {
   createComment,
   deleteComment,
   likeComment,
-  purgeComments,
 } from "../controllers/comment.js";
 import auth from "../middleware/auth.js";
 
@@ -21,8 +20,5 @@ router.patch("/comments/:id/like", auth, likeComment);
 
 /* Delete a comment */
 router.delete("/comments/:id", auth, deleteComment);
-
-/* Purge Comment database */
-router.delete("/comments", purgeComments);
 
 export default router;

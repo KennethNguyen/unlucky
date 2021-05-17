@@ -20,11 +20,14 @@ As a learning project where the concept is simple, I don't anticipate a lot of u
 
 ## Design Docs
 
-Coming Soon!
+- [Figma Mockups](https://github.com/KennethNguyen/unlucky/wiki/Figma-Mockups)
+- [MongoDB Database Schema Design](https://github.com/KennethNguyen/unlucky/wiki/MongoDB-Database-Schema-Design)
+- [Why did I choose to work with X](https://github.com/KennethNguyen/unlucky/wiki/Choosing-Technologies)
 
 ## Backend Server
 
 View [here](https://unluckyapi.herokuapp.com/)
+
 Hyperlink will be updated to the SwaggerUI documentation once I set it up
 
 ## Technologies
@@ -57,10 +60,6 @@ Hyperlink will be updated to the SwaggerUI documentation once I set it up
   - Heroku
 - Project Management
   - Notion (Notes + Kanban Board)
-
-## Why did I choose to work with X?
-
-Coming Soon!
 
 ## Author
 

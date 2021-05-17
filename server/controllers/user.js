@@ -77,16 +77,6 @@ const deleteUser = async (req, res) => {
   }
 };
 
-/* Delete all users from User collection; just for testing purposes */
-const purgeUsers = async (req, res) => {
-  try {
-    await User.deleteMany({});
-    res.json({ message: "Purged all users" });
-  } catch (error) {
-    res.status(500).json({ error: "Internal Server Error." });
-  }
-};
-
 /* Helper function to create a signed JWT token and send the token with the user's credentials */
 const returnTokenAndUser = async (user) => {
   const tokenContent = {
@@ -101,4 +91,4 @@ const returnTokenAndUser = async (user) => {
   return { token, user: tokenContent };
 };
 
-export { login, signup, deleteUser, purgeUsers };
+export { login, signup, deleteUser };
